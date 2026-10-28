@@ -25,4 +25,17 @@ int main(int argc, char *argv[])
     create_node(&head2,&tail2,str2);
     printf("Num 2 = ");
     print_list(head2);
+
+    Dlist *headR = NULL;
+    Dlist *tailR = NULL;
+    char op = argv[2][0];
+    switch(op)
+    {
+        case '+':
+            addition(&head1, &tail1, &head2, &tail2, &headR, &tailR);
+            printf("Addition of two number : ");
+            print_list(headR);
+            break;
+
+    }
 }

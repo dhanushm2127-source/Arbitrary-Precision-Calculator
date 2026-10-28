@@ -1,5 +1,5 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef APC_H
+#define APC_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,7 +14,10 @@ typedef struct node
 	struct node *next;
 }Dlist;
 
-void create_node(Dlist **head, Dlist **tail, char *str);
-int insert_last(Dlist **head, Dlist **tail, int data);
+int create_node(Dlist **head, Dlist **tail, char *str);
+int insert_at_last(Dlist **head, Dlist **tail, int data);
+int insert_at_first(Dlist **head, Dlist **tail, int data);
 void print_list(Dlist *head);
+void addition(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dlist **headR, Dlist **tailR);
+int subtraction(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dlist **headR, Dlist **tailR);
 #endif
