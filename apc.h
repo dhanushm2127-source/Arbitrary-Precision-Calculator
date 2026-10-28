@@ -19,5 +19,7 @@ int insert_at_last(Dlist **head, Dlist **tail, int data);
 int insert_at_first(Dlist **head, Dlist **tail, int data);
 void print_list(Dlist *head);
 void addition(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dlist **headR, Dlist **tailR);
-int subtraction(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dlist **headR, Dlist **tailR);
+void list_len(Dlist **head1, Dlist **head2, int *List1_count, int *List2_count);
+int list_compare(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2);
+void subtraction(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dlist **headR, Dlist **tailR);
 #endif

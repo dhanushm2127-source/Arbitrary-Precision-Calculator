@@ -36,6 +36,15 @@ int main(int argc, char *argv[])
             printf("Addition of two number : ");
             print_list(headR);
             break;
-
+        case '-':
+            int ret = list_compare(&head1, &tail1, &head2, &tail2);
+            if(ret == 1)
+                subtraction(&head1, &tail1, &head2, &tail2, &headR, &tailR);
+            else
+                subtraction(&head2, &tail2, &head1, &tail1, &headR, &tailR);
+            printf("Subtraction of two number : ");
+            if(ret == 2)
+                printf("-");
+            print_list(headR);
     }
 }
