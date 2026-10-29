@@ -46,5 +46,12 @@ int main(int argc, char *argv[])
             if(ret == 2)
                 printf("-");
             print_list(headR);
+            break;
+        case 'x':
+            multiplication(&head1, &tail1, &head2, &tail2, &headR, &tailR);
+            printf("Multiplication of two number : ");
+            print_list(headR);
+            break;
+
     }
 }
