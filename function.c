@@ -126,6 +126,7 @@ void addition(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dlist 
     }
 }
 
+/*------------------------------------------------------------------------------------------------------------------------------*/
 void list_len(Dlist **head1, Dlist **head2, int *List1_count, int *List2_count)
 {
     Dlist *temp1 = *head1;
@@ -143,6 +144,7 @@ void list_len(Dlist **head1, Dlist **head2, int *List1_count, int *List2_count)
     }
 }
 
+/*------------------------------------------------------------------------------------------------------------------------------*/
 int list_compare(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2)
 {
     int List1_count = 0, List2_count = 0;
@@ -170,6 +172,7 @@ int list_compare(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2)
     }
 }
 
+/*------------------------------------------------------------------------------------------------------------------------------*/
 void subtraction(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dlist **headR, Dlist **tailR)
 {
     int borrow = 0, diff = 0;
