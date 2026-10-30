@@ -52,6 +52,12 @@ int main(int argc, char *argv[])
             printf("Multiplication of two number : ");
             print_list(headR);
             break;
-
+        case '/':
+            division(&head1, &tail1, &head2, &tail2, &headR, &tailR);
+            printf("Division of two number : ");
+            print_list(headR);
+            break;
+        default:
+            printf("Invalid operation\n");
     }
 }

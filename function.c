@@ -317,3 +317,64 @@ void multiplication(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, 
     *headR = headR1;
     *tailR = tailR1;
 }
+
+int remove_zero(Dlist **head, Dlist **tail)
+{
+    if(*head == NULL)
+    {
+        return FAILURE;
+    }
+
+    if((*head)-> data == 0)
+    {
+        Dlist *temp = *head;
+        if(*head == *tail)
+        {
+            *head = NULL;
+            *tail = NULL;
+        }
+        else
+        {
+            *head = (*head) -> next;
+            (*head) -> prev = NULL;
+        }
+        free(temp);
+    }
+    return SUCCESS;
+}
+
+void division(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dlist **headR, Dlist **tailR)
+{
+    Dlist *temp1 = *head1;
+    Dlist *headR1 = NULL;
+    Dlist *tailR1 = NULL;
+
+    Dlist *headR2 = NULL;
+    Dlist *tailR2 = NULL;
+
+    while(temp1 != NULL)
+    {
+        int count = 0;
+        Dlist *temp2 = *head2;
+        insert_at_last(&headR1, &tailR1, temp2 -> data);
+        temp2 = temp2 -> next;
+        while(list_compare(&headR1, &tailR1, head2, tail2) == 2)
+        {
+            subtraction(&headR1, &tailR1, head2, tail2, &headR2, &tailR2);
+            delete_list(&headR1, &tailR1);
+
+            headR1 = headR2;
+            tailR1 = tailR2;
+
+            headR2 = NULL;
+            tailR2 = NULL;
+            remove_zero(&headR1, &tailR1);
+            count++;
+        }
+        insert_at_last(headR, tailR, count);
+        temp1 = temp1 -> next;
+    }
+}
+
+
+

@@ -24,4 +24,6 @@ int list_compare(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2);
 void subtraction(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dlist **headR, Dlist **tailR);
 int delete_list(Dlist **head, Dlist **tail);
 void multiplication(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dlist **headR, Dlist **tailR);
+int remove_zero(Dlist **head, Dlist **tail);
+void division(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dlist **headR, Dlist **tailR);
 #endif
