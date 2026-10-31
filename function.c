@@ -88,45 +88,6 @@ int insert_at_first(Dlist **head, Dlist **tail, int data)
 }
 
 /*------------------------------------------------------------------------------------------------------------------------------*/
-void addition(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dlist **headR, Dlist **tailR)
-{
-    Dlist *temp1 = *tail1;
-    Dlist *temp2 = *tail2;
-
-    int carry = 0;
-    int sum = 0;
-    while(temp1 != NULL || temp2 != NULL)
-    {
-        if(temp1 != NULL && temp2 != NULL)
-        {
-            sum = temp1 -> data + temp2 -> data + carry;
-            carry = sum / 10;
-            insert_at_first(headR, tailR, sum % 10);
-            temp1 = temp1 -> prev;
-            temp2 = temp2 -> prev;
-        }
-        else if(temp1 != NULL && temp2 == NULL)
-        {
-            sum = temp1 -> data + carry;
-            carry = sum / 10;
-            insert_at_first(headR, tailR, sum % 10);
-            temp1 = temp1 -> prev;            
-        }
-        else if(temp1 == NULL && temp2 != NULL)
-        {
-            sum = temp2 -> data + carry;
-            carry = sum / 10;
-            insert_at_first(headR, tailR, sum % 10);
-            temp2 = temp2 -> prev;            
-        }
-    }
-    if(carry == 1)
-    {
-        insert_at_first(headR, tailR, carry);
-    }
-}
-
-/*------------------------------------------------------------------------------------------------------------------------------*/
 void list_len(Dlist **head1, Dlist **head2, int *List1_count, int *List2_count)
 {
     Dlist *temp1 = *head1;
@@ -154,82 +115,23 @@ int list_compare(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2)
         return 1;
     else if(List1_count < List2_count)
         return 2;
-    else if(List1_count == List2_count)
+    
+    Dlist *temp1 = *head1;
+    Dlist *temp2 = *head2;
+    while(temp1 != NULL && temp2!= NULL)
     {
-        Dlist *temp1 = *head1;
-        Dlist *temp2 = *head2;
-        while(temp1 -> data == temp2 -> data)
-        {
-            if(temp1 -> data > temp2 -> data)
-                return 1;
-            else if(temp1 -> data < temp2 -> data)
-                return 2;
+        if(temp1 -> data > temp2 -> data)
+            return 1;
+        else if(temp1 -> data < temp2 -> data)
+            return 2;
 
-            temp1 = temp1 -> next;
-            temp2 = temp2 -> next;
-        }
-        return 0;
+        temp1 = temp1 -> next;
+        temp2 = temp2 -> next;
     }
+    return 0;
 }
 
 /*------------------------------------------------------------------------------------------------------------------------------*/
-void subtraction(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dlist **headR, Dlist **tailR)
-{
-    int borrow = 0, diff = 0;
-    Dlist *temp1 = *tail1;
-    Dlist *temp2 = *tail2;
-    while(temp1 != NULL || temp2 != NULL)
-    {
-        if(temp1 != NULL && temp2 != NULL)
-        {
-            if(temp1 -> data < temp2 -> data)
-            {
-                temp1 -> data = temp1 -> data + 10;
-                diff = temp1 -> data - temp2 -> data - borrow;
-                borrow = 1;
-            }
-            else
-            {
-                diff = temp1 -> data - temp2 -> data - borrow;
-                borrow = 0;
-            }
-            insert_at_first(headR, tailR, diff % 10);
-            temp1 = temp1 -> prev;
-            temp2 = temp2 -> prev;
-        }
-        else if(temp1 != NULL && temp2 == NULL)
-        {
-            diff = temp1 -> data - borrow; 
-            if(diff < 0)
-            {
-                diff = diff + 10;
-                borrow = 1;
-            } 
-            else
-            {
-                borrow = 0;
-            }
-            insert_at_first(headR, tailR, diff % 10);
-            temp1 = temp1 -> prev;        
-        }
-        else if(temp1 == NULL && temp2 != NULL)
-        {
-            diff = temp2 -> data - borrow; 
-            if(diff < 0)
-            {
-                diff = diff + 10;
-                borrow = 1;
-            } 
-            else
-            {
-                borrow = 0;
-            }
-            insert_at_first(headR, tailR, diff % 10);
-            temp2 = temp2 -> prev;          
-        }
-    }
-}
-
 int delete_list(Dlist **head, Dlist **tail)
 {
     if(*head == NULL)
@@ -256,68 +158,7 @@ int delete_list(Dlist **head, Dlist **tail)
     return SUCCESS;
 }
 
-void multiplication(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dlist **headR, Dlist **tailR)
-{
-    Dlist *headR1 = NULL;
-    Dlist *tailR1 = NULL;
-    Dlist *headR2 = NULL;
-    Dlist *tailR2 = NULL;
-
-    Dlist *temp2 = *tail2;
-    int count = 0;
-    while(temp2 != NULL)
-    {
-        Dlist *temp1 = *tail1;
-        int carry = 0;
-        while(temp1 != NULL)
-        {
-            int multi = temp1 -> data * temp2 -> data + carry;
-            carry = multi / 10;
-            if(count == 0)
-            {
-                insert_at_first(&headR1, &tailR1, multi % 10);
-            }
-            else
-            {
-                insert_at_first(&headR2, &tailR2, multi % 10);
-            }
-            temp1 = temp1 -> prev;
-        }
-        if(carry > 0)
-        {
-            if(count == 0)
-            {
-                insert_at_first(&headR1, &tailR1, carry);
-            }
-            else
-            {
-                insert_at_first(&headR2, &tailR2, carry);
-            }
-        }
-        
-        if(count > 0)
-        {
-            for(int i = 0; i < count; i++)
-            {
-                insert_at_last(&headR2, &tailR2, 0);
-            }
-            addition(&headR1, &tailR1, &headR2, &tailR2, headR, tailR);
-            delete_list(&headR1, &tailR1);
-            delete_list(&headR2, &tailR2);
-            headR1 = *headR;
-            tailR1 = *tailR;
-
-            *headR = NULL;
-            *tailR = NULL;
-        }
-        temp2 = temp2 -> prev;
-        count++;
-    }
-
-    *headR = headR1;
-    *tailR = tailR1;
-}
-
+/*------------------------------------------------------------------------------------------------------------------------------*/
 int remove_zero(Dlist **head, Dlist **tail)
 {
     if(*head == NULL)
@@ -325,56 +166,19 @@ int remove_zero(Dlist **head, Dlist **tail)
         return FAILURE;
     }
 
-    if((*head)-> data == 0)
+    while((*head) != NULL && (*head)-> data == 0)
     {
         Dlist *temp = *head;
-        if(*head == *tail)
+        *head = (*head) -> next;
+        if(*head != NULL)
         {
-            *head = NULL;
-            *tail = NULL;
+            (*head) -> prev = NULL;
         }
         else
         {
-            *head = (*head) -> next;
-            (*head) -> prev = NULL;
+            *tail = NULL;
         }
         free(temp);
     }
     return SUCCESS;
 }
-
-void division(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dlist **headR, Dlist **tailR)
-{
-    Dlist *temp1 = *head1;
-    Dlist *headR1 = NULL;
-    Dlist *tailR1 = NULL;
-
-    Dlist *headR2 = NULL;
-    Dlist *tailR2 = NULL;
-
-    while(temp1 != NULL)
-    {
-        int count = 0;
-        Dlist *temp2 = *head2;
-        insert_at_last(&headR1, &tailR1, temp2 -> data);
-        temp2 = temp2 -> next;
-        while(list_compare(&headR1, &tailR1, head2, tail2) == 2)
-        {
-            subtraction(&headR1, &tailR1, head2, tail2, &headR2, &tailR2);
-            delete_list(&headR1, &tailR1);
-
-            headR1 = headR2;
-            tailR1 = tailR2;
-
-            headR2 = NULL;
-            tailR2 = NULL;
-            remove_zero(&headR1, &tailR1);
-            count++;
-        }
-        insert_at_last(headR, tailR, count);
-        temp1 = temp1 -> next;
-    }
-}
-
-
-
