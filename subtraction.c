@@ -1,6 +1,6 @@
 #include "apc.h"
 
-void subtraction(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dlist **headR, Dlist **tailR)
+int subtraction(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dlist **headR, Dlist **tailR)
 {
     int borrow = 0, diff = 0;
     Dlist *temp1 = *tail1;
@@ -20,7 +20,8 @@ void subtraction(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dli
                 diff = temp1 -> data - temp2 -> data - borrow;
                 borrow = 0;
             }
-            insert_at_first(headR, tailR, diff % 10);
+            if(insert_at_first(headR, tailR, diff % 10) == FAILURE)
+                return FAILURE;
             temp1 = temp1 -> prev;
             temp2 = temp2 -> prev;
         }
@@ -36,7 +37,8 @@ void subtraction(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dli
             {
                 borrow = 0;
             }
-            insert_at_first(headR, tailR, diff % 10);
+            if(insert_at_first(headR, tailR, diff % 10) == FAILURE)
+                return FAILURE;
             temp1 = temp1 -> prev;        
         }
         else if(temp1 == NULL && temp2 != NULL)
@@ -51,8 +53,10 @@ void subtraction(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dli
             {
                 borrow = 0;
             }
-            insert_at_first(headR, tailR, diff % 10);
+            if(insert_at_first(headR, tailR, diff % 10) == FAILURE)
+                return FAILURE;
             temp2 = temp2 -> prev;          
         }
     }
+    return SUCCESS;
 }

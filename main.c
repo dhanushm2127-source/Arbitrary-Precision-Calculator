@@ -8,27 +8,37 @@ int main(int argc, char *argv[])
         printf("Please enter:  ./a.out <number1> <op> <number2>");
         return FAILURE;
     }
+
+    if(valid_arg(argv[1], argv[3]) == FAILURE)
+    {
+        printf("ERROR... Invalid Input\n");
+        return SUCCESS;
+    }
+
     //Operand 1 (argv[1])
     Dlist *head1 = NULL;
     Dlist *tail1 = NULL;
-    char *str1 = argv[1];
-    int data1, i = 0;
-    create_node(&head1,&tail1,str1);
+    if(create_node(&head1,&tail1,argv[1]) == FAILURE)
+    {
+        return FAILURE;
+    }
     printf("Num 1 = ");
     print_list(head1);
 
     //Operand 2 (argv[3])
     Dlist *head2 = NULL;
     Dlist *tail2 = NULL;
-    char *str2 = argv[3];
-    int data2, j = 0;
-    create_node(&head2,&tail2,str2);
+    if(create_node(&head2,&tail2,argv[3]) == FAILURE)
+    {
+        return FAILURE;
+    }
     printf("Num 2 = ");
     print_list(head2);
 
     Dlist *headR = NULL;
     Dlist *tailR = NULL;
-    char op = argv[2][0];
+    char sign = '+';
+    char op = operation_type(&head1, &head2, argv[2][0], &sign);
     switch(op)
     {
         case '+':
@@ -37,15 +47,17 @@ int main(int argc, char *argv[])
             print_list(headR);
             break;
         case '-':
-            int ret = list_compare(&head1, &tail1, &head2, &tail2);
-            if(ret == 1)
+        {
+                int ret = list_compare(&head1, &tail1, &head2, &tail2);
+                if(ret == NOSWAP)
                 subtraction(&head1, &tail1, &head2, &tail2, &headR, &tailR);
-            else
-                subtraction(&head2, &tail2, &head1, &tail1, &headR, &tailR);
-            printf("Subtraction of two number : ");
-            if(ret == 2)
-                printf("-");
-            print_list(headR);
+                    else
+                    subtraction(&head2, &tail2, &head1, &tail1, &headR, &tailR);
+                printf("Subtraction of two number : ");
+                if(ret == SWAP)
+                    printf("-");
+                print_list(headR);
+            }
             break;
         case 'x':
             multiplication(&head1, &tail1, &head2, &tail2, &headR, &tailR);

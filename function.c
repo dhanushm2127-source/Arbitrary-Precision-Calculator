@@ -2,16 +2,119 @@
 
 int create_node(Dlist **head, Dlist **tail, char *str)
 {
-    int i = 0, data;
+    int i = 0;
+    int data;
     while(str[i] != '\0')
     {
-        data = str[i] - 48;
-        insert_at_last(head, tail, data);
+        if(str[i] == '+' || str[i] == '-')
+            data = str[i];
+        else
+            data = str[i] - 48;
+        if(insert_at_last(head, tail, data) == FAILURE)
+        {
+            return FAILURE;
+        }
         i++;
     }
     return SUCCESS;
 }
 
+/*------------------------------------------------------------------------------------------------------------------------------*/
+int valid_arg(char *str1, char *str2)
+{
+    for(int i = 0; str1[i] != 0; i++)
+    {
+        if(str1[i] == '-' || str1[i] == '+')
+            continue;
+        if(str1[i] < '0' || str1[i] > '9')
+            return FAILURE;
+    }
+
+    for(int j = 0; str2[j] != 0; j++)
+    {
+        if(str2[j] == '-' || str2[j] == '+')
+            continue;
+        if(str2[j] < '0' || str2[j] > '9')
+            return FAILURE;
+    }
+    return SUCCESS;
+}
+
+/*------------------------------------------------------------------------------------------------------------------------------*/
+char operation_type(Dlist **head1, Dlist ** head2, char op, char *sign)
+{
+    char sign1 = '+';
+    char sign2 = '+';
+
+    if((*head1) -> data == '+' || (*head1) -> data == '-')
+    {
+        sign1 = (*head1) -> data;
+        *head1 = (*head1) -> next;
+        (*head1) -> prev = NULL;
+    }
+    if((*head2) -> data == '+' || (*head2) -> data == '-')
+    {
+        sign2 = (*head2) -> data;
+        *head2 = (*head2) -> next;
+        (*head2) -> prev = NULL;
+    }
+
+    switch(op)
+    {
+        case '+':
+            if(sign1 == sign2)
+            {
+                *sign = sign1;
+                return '+';
+            }
+            else
+            {
+                if(list_compare(head1, NULL, head2, NULL) == NOSWAP)
+                    *sign = sign1;
+                else
+                    *sign = sign2;
+                return '-';
+            }
+
+        case '-':
+            if(sign1 == '+' && sign2 == '+')
+            {
+                if(list_compare(head1, NULL, head2, NULL) == NOSWAP)
+                    *sign = '+';
+                else
+                    *sign = '-';
+                return '-';
+            }
+            else if(sign1 == '-' && sign2 == '-')
+            {
+                if(list_compare(head1, NULL, head2, NULL) == NOSWAP)
+                    *sign = '-';
+                else
+                    *sign = '+';
+
+                return '-';
+            }
+            else if(sign1 == '+' && sign2 == '-')
+            {
+                *sign = '+';
+                return '+';
+            }
+            else
+            {
+                *sign = '-';
+                return '+';
+            }
+        
+        case 'x': 
+            *sign = (sign1 == sign2) ? '+' : '-';
+            return 'x';
+
+        case '/': 
+            *sign = (sign1 == sign2) ? '+' : '-';
+            return '/';
+    }
+    return op;
+}
 /*------------------------------------------------------------------------------------------------------------------------------*/
 int insert_at_last(Dlist **head, Dlist **tail, int data1)
 {
@@ -43,21 +146,22 @@ int insert_at_last(Dlist **head, Dlist **tail, int data1)
 }
 
 /*------------------------------------------------------------------------------------------------------------------------------*/
-void print_list(Dlist *head)
+int print_list(Dlist *head)
 {
 	if (head == NULL)
 	{
 		printf("INFO : List is empty\n");
 	}
-	else
+	while (head != NULL)		
 	{
-	    while (head)		
-	    {
-		    printf("%d", head -> data);
-		    head = head -> next;
-	    }
+        if(head -> data == 43 || head -> data == 45)
+            printf("%c", head -> data);
+        else
+	        printf("%d", head -> data);
+	    head = head -> next;
     }
     printf("\n");
+    return SUCCESS;
 }
 
 /*------------------------------------------------------------------------------------------------------------------------------*/
@@ -88,7 +192,7 @@ int insert_at_first(Dlist **head, Dlist **tail, int data)
 }
 
 /*------------------------------------------------------------------------------------------------------------------------------*/
-void list_len(Dlist **head1, Dlist **head2, int *List1_count, int *List2_count)
+int list_len(Dlist **head1, Dlist **head2, int *List1_count, int *List2_count)
 {
     Dlist *temp1 = *head1;
     Dlist *temp2 = *head2;
@@ -103,6 +207,7 @@ void list_len(Dlist **head1, Dlist **head2, int *List1_count, int *List2_count)
         (*List2_count)++;
         temp2 = temp2 -> next;
     }
+    return SUCCESS;
 }
 
 /*------------------------------------------------------------------------------------------------------------------------------*/
@@ -112,23 +217,23 @@ int list_compare(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2)
     list_len(head1, head2, &List1_count, &List2_count);
 
     if(List1_count > List2_count)
-        return 1;
+        return NOSWAP;
     else if(List1_count < List2_count)
-        return 2;
+        return SWAP;
     
     Dlist *temp1 = *head1;
     Dlist *temp2 = *head2;
     while(temp1 != NULL && temp2!= NULL)
     {
         if(temp1 -> data > temp2 -> data)
-            return 1;
+            return NOSWAP;
         else if(temp1 -> data < temp2 -> data)
-            return 2;
+            return SWAP;
 
         temp1 = temp1 -> next;
         temp2 = temp2 -> next;
     }
-    return 0;
+    return EQUAL;
 }
 
 /*------------------------------------------------------------------------------------------------------------------------------*/

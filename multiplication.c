@@ -1,6 +1,6 @@
 #include "apc.h"
 
-void multiplication(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dlist **headR, Dlist **tailR)
+int multiplication(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dlist **headR, Dlist **tailR)
 {
     Dlist *headR1 = NULL;
     Dlist *tailR1 = NULL;
@@ -19,11 +19,13 @@ void multiplication(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, 
             carry = multi / 10;
             if(count == 0)
             {
-                insert_at_first(&headR1, &tailR1, multi % 10);
+                if(insert_at_first(&headR1, &tailR1, multi % 10) == FAILURE)
+                    return FAILURE;
             }
             else
             {
-                insert_at_first(&headR2, &tailR2, multi % 10);
+                if(insert_at_first(&headR2, &tailR2, multi % 10) == FAILURE)
+                    return FAILURE;
             }
             temp1 = temp1 -> prev;
         }
@@ -31,11 +33,13 @@ void multiplication(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, 
         {
             if(count == 0)
             {
-                insert_at_first(&headR1, &tailR1, carry);
+                if(insert_at_first(&headR1, &tailR1, carry) == FAILURE)
+                    return FAILURE;
             }
             else
             {
-                insert_at_first(&headR2, &tailR2, carry);
+                if(insert_at_first(&headR2, &tailR2, carry) == FAILURE)
+                    return FAILURE;
             }
         }
         
@@ -43,7 +47,8 @@ void multiplication(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, 
         {
             for(int i = 0; i < count; i++)
             {
-                insert_at_last(&headR2, &tailR2, 0);
+                if(insert_at_last(&headR2, &tailR2, 0) == FAILURE)
+                    return FAILURE;
             }
             addition(&headR1, &tailR1, &headR2, &tailR2, headR, tailR);
             delete_list(&headR1, &tailR1);
@@ -60,4 +65,6 @@ void multiplication(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, 
 
     *headR = headR1;
     *tailR = tailR1;
+
+    return SUCCESS;
 }
