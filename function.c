@@ -271,19 +271,89 @@ int remove_zero(Dlist **head, Dlist **tail)
         return FAILURE;
     }
 
-    while((*head) != NULL && (*head)-> data == 0)
+    while((*head) != *tail && (*head)-> data == 0)
     {
         Dlist *temp = *head;
         *head = (*head) -> next;
         if(*head != NULL)
-        {
-            (*head) -> prev = NULL;
-        }
-        else
-        {
-            *tail = NULL;
-        }
+        
+        (*head) -> prev = NULL;
+        
         free(temp);
+    }
+    return SUCCESS;
+}
+
+/*------------------------------------------------------------------------------------------------------------------------------*/
+int do_operation(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, char operator)
+{
+    Dlist *headR = NULL;
+    Dlist *tailR = NULL;
+    char sign = '+';
+    char op = operation_type(head1, head2, operator, &sign);
+    switch(op)
+    {
+        case '+':
+            if(addition(head1, tail1, head2, tail2, &headR, &tailR) == FAILURE)
+                return FAILURE;
+
+            remove_zero(&headR, &tailR);
+            
+            if(sign == '-')
+                insert_at_first(&headR, &tailR, '-');
+            printf("Addition of two number : "); 
+            print_list(headR);
+            break;
+        case '-':
+        {
+                int ret = list_compare(head1, tail1, head2, tail2);
+                if(ret == NOSWAP)
+                {
+                    subtraction(head1, tail1, head2, tail2, &headR, &tailR);
+                }
+                else
+                {
+                    subtraction(head2, tail2, head1, tail1, &headR, &tailR);
+                }
+                remove_zero(&headR, &tailR);
+                if(headR -> data == 0 && headR == tailR)
+                    sign = '+';
+
+                if(sign == '-')
+                    insert_at_first(&headR, &tailR, '-');
+
+                printf("Subtraction of two number : ");
+                print_list(headR);
+            }
+            break;
+        case 'x':
+            if(multiplication(head1, tail1, head2, tail2, &headR, &tailR) == FAILURE)
+                return FAILURE;
+            remove_zero(&headR, &tailR);
+            if(sign == '-')
+                insert_at_first(&headR, &tailR, '-');
+            
+            printf("Multiplication of two number : ");
+            print_list(headR);
+            break;
+        case '/':
+            if(division(head1, tail1, head2, tail2, &headR, &tailR) == FAILURE)
+            {
+                return FAILURE;
+            }
+            remove_zero(&headR, &tailR);
+            if(headR -> data == 0 && headR == tailR)
+                sign = '+';
+
+            if(sign == '-')
+                insert_at_first(&headR, &tailR, '-');
+
+            printf("Division of two number : ");
+            print_list(headR);
+            break;
+        default:
+            printf("ERROR....Invalid operand\n");
+            return FAILURE;
     }
     return SUCCESS;
 }

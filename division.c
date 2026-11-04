@@ -7,7 +7,11 @@ int division(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dlist *
     Dlist *tail3 = NULL;
     Dlist *res_head=NULL;
     Dlist *res_tail=NULL;
-
+    if((*head1) -> data == 0 && (*head1) -> next == NULL)
+    {
+        insert_at_last(headR, tailR, 0);
+        return SUCCESS;
+    }
     if(*head2 == NULL || (*head2) -> data == 0)
     {
         printf("ERROR... Division by zero is not possible\n");
@@ -16,7 +20,6 @@ int division(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dlist *
     while(temp1!=NULL)
     {
         int ret,count=0;
-        Dlist *temp2 = *head2;
 
         if(insert_at_last(&head3,&tail3,temp1->data) == FAILURE)
             return FAILURE;
@@ -25,7 +28,7 @@ int division(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dlist *
         remove_zero(&head3, &tail3);
 
         ret = list_compare(&head3,&tail3,head2,tail2);
-        while(ret == 1 || ret == 0)
+        while(ret == NOSWAP || ret == EQUAL)
         {
             subtraction(&head3,&tail3,head2,tail2,&res_head,&res_tail);
             delete_list(&head3,&tail3);

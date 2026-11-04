@@ -35,41 +35,5 @@ int main(int argc, char *argv[])
     printf("Num 2 = ");
     print_list(head2);
 
-    Dlist *headR = NULL;
-    Dlist *tailR = NULL;
-    char sign = '+';
-    char op = operation_type(&head1, &head2, argv[2][0], &sign);
-    switch(op)
-    {
-        case '+':
-            addition(&head1, &tail1, &head2, &tail2, &headR, &tailR);
-            printf("Addition of two number : ");
-            print_list(headR);
-            break;
-        case '-':
-        {
-                int ret = list_compare(&head1, &tail1, &head2, &tail2);
-                if(ret == NOSWAP)
-                subtraction(&head1, &tail1, &head2, &tail2, &headR, &tailR);
-                    else
-                    subtraction(&head2, &tail2, &head1, &tail1, &headR, &tailR);
-                printf("Subtraction of two number : ");
-                if(ret == SWAP)
-                    printf("-");
-                print_list(headR);
-            }
-            break;
-        case 'x':
-            multiplication(&head1, &tail1, &head2, &tail2, &headR, &tailR);
-            printf("Multiplication of two number : ");
-            print_list(headR);
-            break;
-        case '/':
-            division(&head1, &tail1, &head2, &tail2, &headR, &tailR);
-            printf("Division of two number : ");
-            print_list(headR);
-            break;
-        default:
-            printf("Invalid operation\n");
-    }
+    do_operation(&head1, &tail1, &head2, &tail2, argv[2][0]);
 }

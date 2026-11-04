@@ -60,4 +60,7 @@ int remove_zero(Dlist **head, Dlist **tail);
 /* Perform Division of two numbers */
 int division(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, Dlist **headR, Dlist **tailR);
 
+/*Perform operation and display the result */
+int do_operation(Dlist **head1, Dlist **tail1, Dlist **head2, Dlist **tail2, char operator);
+
 #endif
